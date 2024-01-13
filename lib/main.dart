@@ -1,7 +1,8 @@
-import 'dart:ffi';
-
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:effective_mobile_test_tasck/carousel_with_indicator.dart';
+import 'package:effective_mobile_test_tasck/pages/screen_booking.dart';
+import 'package:effective_mobile_test_tasck/pages/screen_hotel.dart';
+import 'package:effective_mobile_test_tasck/pages/screen_number.dart';
+import 'package:effective_mobile_test_tasck/shared/carousel_with_indicator.dart';
+import 'package:effective_mobile_test_tasck/shared/hotel_rating.dart';
 import 'package:flutter/material.dart';
 
 final List<String> imgList = [
@@ -21,33 +22,6 @@ final List<Widget> imageSliders = imgList
                 child: Stack(
                   children: <Widget>[
                     Image.network(item, fit: BoxFit.cover, width: 1000.0),
-                    // Positioned(
-                    //   bottom: 0.0,
-                    //   left: 0.0,
-                    //   right: 0.0,
-                    //   child: Container(
-                    //     decoration: BoxDecoration(
-                    //       gradient: LinearGradient(
-                    //         colors: [
-                    //           Color.fromARGB(200, 0, 0, 0),
-                    //           Color.fromARGB(0, 0, 0, 0)
-                    //         ],
-                    //         begin: Alignment.bottomCenter,
-                    //         end: Alignment.topCenter,
-                    //       ),
-                    //     ),
-                    //     padding: EdgeInsets.symmetric(
-                    //         vertical: 10.0, horizontal: 20.0),
-                    //     child: Text(
-                    //       'No. ${imgList.indexOf(item)} image',
-                    //       style: TextStyle(
-                    //         color: Colors.white,
-                    //         fontSize: 20.0,
-                    //         fontWeight: FontWeight.bold,
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
                   ],
                 )),
           ),
@@ -69,23 +43,13 @@ class App extends StatelessWidget {
           themeMode: ThemeMode.values.toList()[value as int],
           debugShowCheckedModeBanner: false,
           routes: {
-            '/': (ctx) => ScreenHotel(),
+            '/': (ctx) => ScreenBooking(),
+            // '/': (ctx) => ScreenNumber(),
+            // '/': (ctx) => ScreenHotel(),
           },
         );
       },
       valueListenable: themeMode,
-    );
-  }
-}
-
-class ScreenHotel extends StatelessWidget {
-  const ScreenHotel({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Center(child: Text('Отель'))),
-      body: CarouselSliderHostel(),
     );
   }
 }
