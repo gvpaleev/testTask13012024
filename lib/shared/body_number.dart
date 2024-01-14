@@ -1,4 +1,3 @@
-import 'package:effective_mobile_test_tasck/shared/carousel_with_indicator.dart';
 import 'package:effective_mobile_test_tasck/shared/select_number_button.dart';
 import 'package:flutter/material.dart';
 
@@ -12,7 +11,7 @@ class BodyNumber extends StatelessWidget {
     return Container(
         child: Column(
       children: [
-        CarouselSliderHostel(),
+        // CarouselSliderImg(),
         BasicDataNumber(),
       ],
     ));

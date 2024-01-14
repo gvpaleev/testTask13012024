@@ -10,10 +10,56 @@ class PriceHotel extends StatelessWidget {
     return Container(
       child: Row(
         children: [
-          Text('от 134 673 ₽'),
-          Text('за тур с перелётом'),
+          PriceHotelWidget(),
+          SizedBox(width: 8),
+          Column(
+            children: [
+              SizedBox(
+                height: 14,
+              ),
+              InfoPriceDataWidget(),
+            ],
+          ),
         ],
       ),
+    );
+  }
+}
+
+class PriceHotelWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(
+          'от 134 673 ₽',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 30,
+            fontFamily: 'SF Pro Display',
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class InfoPriceDataWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(
+          'за тур с перелётом',
+          style: TextStyle(
+            color: Color(0xFF828796),
+            fontSize: 16,
+            fontFamily: 'SF Pro Display',
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+      ],
     );
   }
 }
