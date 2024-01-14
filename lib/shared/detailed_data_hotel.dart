@@ -1,7 +1,11 @@
+import 'package:effective_mobile_test_tasck/shared/text__sf_pro_14__widget.dart';
+import 'package:effective_mobile_test_tasck/shared/text__sf_pro_16__widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class DetailedDataHotel extends StatelessWidget {
-  const DetailedDataHotel({super.key});
+  final Map<String, dynamic> aboutTheHotel;
+  const DetailedDataHotel({super.key, required this.aboutTheHotel});
 
   @override
   Widget build(BuildContext context) {
@@ -13,11 +17,12 @@ class DetailedDataHotel extends StatelessWidget {
       SizedBox(
         height: 16,
       ),
-      DivCharacteristicsWidget(),
+      DivCharacteristicsWidget(
+          peculiarities: aboutTheHotel['peculiarities'].cast<String>()),
       SizedBox(
         height: 12,
       ),
-      DescriptionHotelWidget(),
+      DescriptionHotelWidget(description: aboutTheHotel['description']),
       SizedBox(
         height: 16,
       ),
@@ -42,132 +47,27 @@ class HeaderWidget extends StatelessWidget {
 }
 
 class DivCharacteristicsWidget extends StatelessWidget {
+  final List<String> peculiarities;
+  DivCharacteristicsWidget({required this.peculiarities});
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-              decoration: ShapeDecoration(
-                color: Color(0xFFFBFBFC),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5)),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    '3-я линия',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Color(0xFF828796),
-                      fontSize: 16,
-                      fontFamily: 'SF Pro Display',
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(width: 8),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-              decoration: ShapeDecoration(
-                color: Color(0xFFFBFBFC),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5)),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    'Платный Wi-Fi в фойе',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Color(0xFF828796),
-                      fontSize: 16,
-                      fontFamily: 'SF Pro Display',
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-        SizedBox(
-          height: 8,
-        ),
-        Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-              decoration: ShapeDecoration(
-                color: Color(0xFFFBFBFC),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5)),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    '30 км до аэропорта',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Color(0xFF828796),
-                      fontSize: 16,
-                      fontFamily: 'SF Pro Display',
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(width: 8),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-              decoration: ShapeDecoration(
-                color: Color(0xFFFBFBFC),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5)),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    '1 км до пляжа',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Color(0xFF828796),
-                      fontSize: 16,
-                      fontFamily: 'SF Pro Display',
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        )
-      ],
+    return Container(
+      child: Wrap(
+        spacing: 8.0, // Расстояние между элементами по горизонтали
+        runSpacing: 8.0,
+        children: peculiarities
+            .map(
+                (e) => Text_SFPro_16_Widget(title: e, color: Color(0xFF828796)))
+            .toList(),
+      ),
     );
   }
 }
 
 class DescriptionHotelWidget extends StatelessWidget {
+  final String description;
+  DescriptionHotelWidget({required this.description});
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -175,7 +75,7 @@ class DescriptionHotelWidget extends StatelessWidget {
         SizedBox(
           width: 343,
           child: Text(
-            'Отель VIP-класса с собственными гольф полями. Высокий уровнь сервиса. Рекомендуем для респектабельного отдыха. Отель принимает гостей от 18 лет!',
+            this.description,
             style: TextStyle(
               color: Colors.black.withOpacity(0.8999999761581421),
               fontSize: 16,
@@ -190,73 +90,104 @@ class DescriptionHotelWidget extends StatelessWidget {
 }
 
 class DivAdvantagesHotelWidget extends StatelessWidget {
+  final List<List<String>> data = [
+    [
+      'assets/emoji-happy.svg',
+      'Удобства',
+      'Самое необходимое',
+      'assets/Vector 55.svg'
+    ],
+    [],
+    [
+      'assets/tick-square.svg',
+      'Что включено',
+      'Самое необходимое',
+      'assets/Vector 55.svg'
+    ],
+    [],
+    [
+      'assets/close-square.svg',
+      'Что не включено',
+      'Самое необходимое',
+      'assets/Vector 55.svg'
+    ],
+  ];
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(15),
       child: Column(
-        children: [
-          Row(
-            children: [
-              Icon(Icons.star),
-              SizedBox(
-                width: 12,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text_SFPro_16_Widget(
-                    title: 'Удобства',
-                    color: Color(0xFF2C3035),
-                  ),
-                  Text_SFPro_14_Widget(
-                      title: 'Самое необходимое', color: Color(0xFF828696))
-                ],
-              ),
-              Expanded(child: Container()),
-              Icon(Icons.abc)
-            ],
-          )
-        ],
-      ),
-    );
-  }
-}
+          children: data
+              .map((elem) => elem.length > 0
+                  ? Row(
+                      children: [
+                        SvgPicture.asset(
+                          elem[0],
+                          width: 24.0, // Ширина изображения
+                          height: 24.0, // Высота изображения
+                        ),
+                        // Icon(Icons.star),
+                        SizedBox(
+                          width: 12,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text_SFPro_16_Widget(
+                              title: elem[1],
+                              color: Color(0xFF2C3035),
+                            ),
+                            Text_SFPro_14_Widget(
+                                title: elem[2], color: Color(0xFF828696))
+                          ],
+                        ),
+                        Expanded(child: Container()),
+                        SvgPicture.asset(
+                          elem[3],
+                          width: 24.0, // Ширина изображения
+                          height: 24.0, // Высота изображения
+                        ),
+                      ],
+                    )
+                  : Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Container(
+                              width: 310,
+                              height: 0.5,
+                              color: const Color.fromARGB(130, 135, 150, 15)),
+                        ],
+                      ),
+                    ))
+              .toList()
 
-class Text_SFPro_16_Widget extends StatelessWidget {
-  final String title;
-  final Color color;
-  Text_SFPro_16_Widget({required this.title, required this.color});
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      title,
-      style: TextStyle(
-        color: color,
-        fontSize: 16,
-        fontFamily: 'SF Pro Display',
-        fontWeight: FontWeight.w500,
-      ),
-    );
-  }
-}
-
-class Text_SFPro_14_Widget extends StatelessWidget {
-  final String title;
-  final Color color;
-  Text_SFPro_14_Widget({required this.title, required this.color});
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      title,
-      style: TextStyle(
-        color: color,
-        fontSize: 14,
-        fontFamily: 'SF Pro Display',
-        fontWeight: FontWeight.w500,
-      ),
+          // [
+          //   Row(
+          //     children: [
+          //       Icon(Icons.star),
+          //       SizedBox(
+          //         width: 12,
+          //       ),
+          //       Column(
+          //         crossAxisAlignment: CrossAxisAlignment.start,
+          //         children: [
+          //           Text_SFPro_16_Widget(
+          //             title: 'Удобства',
+          //             color: Color(0xFF2C3035),
+          //           ),
+          //           Text_SFPro_14_Widget(
+          //               title: 'Самое необходимое', color: Color(0xFF828696))
+          //         ],
+          //       ),
+          //       Expanded(child: Container()),
+          //       Icon(Icons.abc)
+          //     ],
+          //   )
+          // ],
+          ),
     );
   }
 }

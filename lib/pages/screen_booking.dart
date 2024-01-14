@@ -1,5 +1,4 @@
-import 'package:effective_mobile_test_tasck/shared/basic_data_hotel.dart';
-import 'package:effective_mobile_test_tasck/shared/hotel_rating.dart';
+import 'package:effective_mobile_test_tasck/widgets/basic_data_hotel.dart';
 import 'package:flutter/material.dart';
 
 class ScreenBooking extends StatelessWidget {
@@ -23,8 +22,8 @@ class BodyBooking extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         child: Column(
-      children: [BasicDataHotel(), InfoBooking(), InfoBuyer()],
-    ));
+            // children: [BasicDataHotel(), InfoBooking(), InfoBuyer()],
+            ));
   }
 }
 

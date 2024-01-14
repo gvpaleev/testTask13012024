@@ -1,27 +1,10 @@
-import 'package:carousel_slider/carousel_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:effective_mobile_test_tasck/main.dart';
 import 'package:flutter/material.dart';
 
-// final List<Widget> imageSliders = imgList
-//     .map((item) => Container(
-//           child: Container(
-//             margin: EdgeInsets.all(5.0),
-//             child: ClipRRect(
-//                 borderRadius: BorderRadius.all(Radius.circular(5.0)),
-//                 child: Stack(
-//                   children: <Widget>[
-//                     Image.network(item, fit: BoxFit.cover, width: 1000.0),
-//                   ],
-//                 )),
-//           ),
-//         ))
-//     .toList();
-
-class CarouselSliderImg extends StatefulWidget {
+class CarouselSliderImgs extends StatefulWidget {
   final List<Widget> imageSliders;
 
-  CarouselSliderImg(List<String> imgs)
+  CarouselSliderImgs(List<String> imgs)
       : imageSliders = imgs
             .map((item) => Container(
                   child: Container(
@@ -43,7 +26,7 @@ class CarouselSliderImg extends StatefulWidget {
   }
 }
 
-class _CarouselSliderImg extends State<CarouselSliderImg> {
+class _CarouselSliderImg extends State<CarouselSliderImgs> {
   int _current = 0;
   final CarouselController _controller = CarouselController();
 

@@ -1,18 +1,11 @@
-import 'package:effective_mobile_test_tasck/shared/carousel_with_indicator.dart';
-import 'package:effective_mobile_test_tasck/shared/basic_data_hotel.dart';
+import 'dart:convert';
+
+import 'package:effective_mobile_test_tasck/widgets/carousel_with_indicator.dart';
+import 'package:effective_mobile_test_tasck/widgets/basic_data_hotel.dart';
 import 'package:effective_mobile_test_tasck/shared/detailed_data_hotel.dart';
-import 'package:effective_mobile_test_tasck/shared/price_hotel.dart';
-import 'package:effective_mobile_test_tasck/shared/select_number_button.dart';
+import 'package:effective_mobile_test_tasck/widgets/price_hotel.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
-final List<String> imgList = [
-  'https://storage.picsave.pp.ua/cluster1/origin/607a91c089965b7ddd6a4493eb9ce43b.jpg',
-  'https://img.desktopwallpapers.ru/nature/pics/wide/1920x1200/3273d664f1f1a28b889e2af3a7dde2dd.jpg',
-  'https://s1.1zoom.me/b6969/215/Maldives_Resorts_Sea_Houses_560367_1920x1080.jpg',
-  'https://wpapers.ru/wallpapers/nature/13206/1920x1080_%D0%9C%D0%B0%D0%BB%D1%8C%D0%B4%D0%B8%D0%B2%D1%8B.jpg',
-  'https://img2.akspic.ru/crops/6/8/0/9/69086/69086-more-bassejn-karibskij_bassejn-otpusk-otel-1920x1080.jpg'
-];
 
 class ScreenHotel extends StatefulWidget {
   ScreenHotel({super.key});
@@ -22,11 +15,13 @@ class ScreenHotel extends StatefulWidget {
 }
 
 class _ScreenHotelState extends State<ScreenHotel> {
-  late Future<String> data;
+  late Future<String> futureData;
+  late Map<String, dynamic> dataScreenHotel;
+
   void initState() {
     super.initState();
     // Вызываем метод для выполнения HTTP-запроса при инициализации виджета
-    data = fetchData();
+    futureData = fetchData();
   }
 
   Future<String> fetchData() async {
@@ -55,7 +50,7 @@ class _ScreenHotelState extends State<ScreenHotel> {
       ),
       body: Center(
         child: FutureBuilder(
-            future: data,
+            future: futureData,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 // Если данные загружаются, отображаем индикатор загрузки
@@ -65,24 +60,38 @@ class _ScreenHotelState extends State<ScreenHotel> {
                 return Text('Error: ${snapshot.error}');
               } else {
                 // Если данные получены успешно, отображаем их
-                print(snapshot.data);
+                dataScreenHotel = jsonDecode(snapshot.data!);
+                // print(this.data['image_urls']);
+
                 return Container(
                   padding: EdgeInsets.symmetric(horizontal: 16),
                   child: ListView(
                     children: [
-                      CarouselSliderImg(imgList),
-                      SizedBox(
+                      CarouselSliderImgs(dataScreenHotel['image_urls']
+                          .cast<String>()
+                          .toList()),
+                      const SizedBox(
                         height: 21,
                       ),
-                      BasicDataHotel(),
-                      SizedBox(
+                      BasicDataHotel(
+                        name: dataScreenHotel['name'],
+                        address: dataScreenHotel['adress'],
+                        rating:
+                            '${dataScreenHotel['rating']} ${dataScreenHotel['rating_name']}',
+                      ),
+                      const SizedBox(
                         height: 10,
                       ),
-                      PriceHotel(),
-                      SizedBox(
+                      HotelPrice(
+                        minimalPrice: dataScreenHotel['minimal_price'],
+                        priceForIt: dataScreenHotel['price_for_it'],
+                      ),
+                      const SizedBox(
                         height: 8,
                       ),
-                      DetailedDataHotel(),
+                      DetailedDataHotel(
+                          aboutTheHotel: jsonDecode(
+                              snapshot.data ?? '')['about_the_hotel']),
                       SizedBox(
                         height: 12,
                       ),
