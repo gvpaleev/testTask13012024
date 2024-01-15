@@ -1,4 +1,3 @@
-import 'package:effective_mobile_test_tasck/widgets/basic_data_hotel.dart';
 import 'package:flutter/material.dart';
 
 class ScreenBooking extends StatelessWidget {

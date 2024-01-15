@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'data_hotel.dart';
+part of 'hotelDto.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
@@ -20,7 +20,7 @@ Map<String, dynamic> _$AboutTheHotelToJson(AboutTheHotel instance) =>
       'peculiarities': instance.peculiarities,
     };
 
-DataHotel _$DataHotelFromJson(Map<String, dynamic> json) => DataHotel(
+HotelDto _$HotelDtoFromJson(Map<String, dynamic> json) => HotelDto(
       id: json['id'] as int,
       name: json['name'] as String,
       address: json['address'] as String,
@@ -34,7 +34,7 @@ DataHotel _$DataHotelFromJson(Map<String, dynamic> json) => DataHotel(
           AboutTheHotel.fromJson(json['aboutTheHotel'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$DataHotelToJson(DataHotel instance) => <String, dynamic>{
+Map<String, dynamic> _$HotelDtoToJson(HotelDto instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
       'address': instance.address,

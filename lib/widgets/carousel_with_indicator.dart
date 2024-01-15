@@ -1,29 +1,83 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+import 'package:http/http.dart' as http;
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:http/io_client.dart';
 import 'package:flutter/material.dart';
 
 class CarouselSliderImgs extends StatefulWidget {
-  final List<Widget> imageSliders;
-
+  late List<Widget> imageSliders;
   CarouselSliderImgs(List<String> imgs)
-      : imageSliders = imgs
+       {
+
+        this.imageSliders = imgs
             .map((item) => Container(
                   child: Container(
                     child: ClipRRect(
                         borderRadius: BorderRadius.all(Radius.circular(15.0)),
                         child: Stack(
                           children: <Widget>[
-                            Image.network(item,
-                                fit: BoxFit.cover, width: 1000.0),
+                            FutureBuilder(
+                        future: _fetchImageData(item.replaceAll(' ', '')),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return CircularProgressIndicator();
+                          } else if (snapshot.hasError) {
+                            return Text('Error: ${snapshot.error}');
+                          } else {
+                            return Image.memory(
+                              snapshot.data as Uint8List,
+                              fit: BoxFit.cover,
+                              width: 1000.0,
+                            );
+                          }
+                        },
+                      ),
+                            // Image.network(item.replaceAll(' ', ''),
+                            //     fit: BoxFit.cover, width: 1000.0,),
                           ],
                         )),
                   ),
                 ))
             .toList();
+            }
 
+  Future<Uint8List> _fetchImageData(String url) async {
+            final HttpClient _httpclient = new HttpClient()
+
+   ..badCertificateCallback = ((X509Certificate cert, String host, int port) {
+
+   debugPrint("CSS Error customer");
+
+   return true;
+
+});
+    try {
+      var uri = Uri.parse(url);
+
+      // Отключаем проверку SSL сертификата
+      var response = await (await _httpclient.getUrl(uri)).close();
+      if (response.statusCode == 200) {
+        final List<int> bytes = await response.fold<List<int>>([], (List<int> acc, List<int> chunk) => acc..addAll(chunk));
+      final Uint8List uint8List = Uint8List.fromList(bytes);
+        return uint8List;
+      } else {
+        print('Request failed with status: ${response.statusCode}');
+        throw Exception('Error: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error: $e');
+      throw Exception('Error: $e');
+    }
+  }
+  
   @override
   State<StatefulWidget> createState() {
     return _CarouselSliderImg();
   }
+  
 }
 
 class _CarouselSliderImg extends State<CarouselSliderImgs> {
