@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class Text_SFPro_16_Widget extends StatelessWidget {
+class Text_SFPro_17_Widget extends StatelessWidget {
   final String title;
   final Color color;
   final FontWeight fontWeigh;
 
-  Text_SFPro_16_Widget(
+  Text_SFPro_17_Widget(
       {required this.title,
       required this.color,
       this.fontWeigh = FontWeight.w500});
@@ -16,7 +16,7 @@ class Text_SFPro_16_Widget extends StatelessWidget {
       title,
       style: TextStyle(
         color: color,
-        fontSize: 16,
+        fontSize: 17,
         fontFamily: 'SF Pro Display',
         fontWeight: fontWeigh,
       ),
