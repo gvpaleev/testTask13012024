@@ -1,10 +1,16 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:effective_mobile_test_tasck/pages/screen_hotel.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:effective_mobile_test_tasck/shared/JsonDto/roomDto.dart';
+import 'package:effective_mobile_test_tasck/shared/detailed_data_hotel.dart';
+import 'package:effective_mobile_test_tasck/shared/text__sf_pro_16__widget.dart';
 import 'package:effective_mobile_test_tasck/shared/text__sf_pro_22__widget.dart';
 import 'package:effective_mobile_test_tasck/widgets/carousel_with_indicator.dart';
+import 'package:effective_mobile_test_tasck/widgets/price_hotel.dart';
+import 'package:effective_mobile_test_tasck/widgets/price_room.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -76,10 +82,29 @@ class _ScreenNumberState extends State<ScreenNumber> {
                   child: ListView(
                     children: 
                       data.map((item){   return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+const SizedBox(height: 16,),
+
                           CarouselSliderImgs(item['image_urls'].cast<String>()),
                           const SizedBox(height: 8,)
-,                          Text_SFPro_22_Widget(title: item['name'], color: Colors.black)
+,                          Text_SFPro_22_Widget(title: item['name'], color: Colors.black),
+const SizedBox(height: 8,),
+DivCharacteristicsWidget(peculiarities: item['особенности'].cast<String>()),
+const SizedBox(height: 7,),
+DetailsRoom(),
+const SizedBox(height: 16,),
+
+RoomPrice(minimalPrice: item['цена'], priceForIt: item['price_per']),
+const SizedBox(height: 16,),
+
+Container(
+  width: double.infinity,
+  child: ButtonWidget (
+                          title: 'Выбрать номер',
+                        ),
+),
+const SizedBox(height: 16,),
                         ],
                       );})
                     .toList()
@@ -89,6 +114,45 @@ class _ScreenNumberState extends State<ScreenNumber> {
                 );
               };
             }),
+      ),
+    );
+  }
+}
+
+class DetailsRoom extends StatelessWidget {
+  const DetailsRoom({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.only(top: 5, left: 10, right: 2, bottom: 5),
+      decoration: ShapeDecoration(
+        color: Color(0x190D72FF),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text_SFPro_16_Widget(title: 'Подробнее о номере', color: Color(0xFF0D72FF))
+          
+          ,
+          const SizedBox(width: 2),
+          Container(
+            padding: const EdgeInsets.only(top: 6, left: 10, right: 8, bottom: 6),
+            child:  SvgPicture.asset(
+                          'assets/Vector 55.svg',
+                          width: 14.0, // Ширина изображения
+                          height: 14.0, 
+                          color: Color(0xFF0D72FF) ,// Высота изображения
+                        )
+              ,
+            ),
+          
+        ],
       ),
     );
   }
