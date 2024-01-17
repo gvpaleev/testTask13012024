@@ -1,120 +1,163 @@
-import 'dart:convert';
-import 'dart:io';
-import 'package:effective_mobile_test_tasck/pages/screen_hotel.dart';
+import 'package:effective_mobile_test_tasck/shared/JsonDto/roomDto.dart';
+import 'package:effective_mobile_test_tasck/shared/apiClient.dart';
+import 'package:effective_mobile_test_tasck/shared/button_widget.dart';
+import 'package:effective_mobile_test_tasck/shared/my_app_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:effective_mobile_test_tasck/shared/JsonDto/roomDto.dart';
-import 'package:effective_mobile_test_tasck/shared/detailed_data_hotel.dart';
 import 'package:effective_mobile_test_tasck/shared/text__sf_pro_16__widget.dart';
 import 'package:effective_mobile_test_tasck/shared/text__sf_pro_22__widget.dart';
 import 'package:effective_mobile_test_tasck/widgets/carousel_with_indicator.dart';
-import 'package:effective_mobile_test_tasck/widgets/price_hotel.dart';
 import 'package:effective_mobile_test_tasck/widgets/price_room.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
-
-class RoomScreen extends StatefulWidget {
+class RoomScreen extends StatelessWidget {
   const RoomScreen({super.key});
 
   @override
-  State<RoomScreen> createState() => _RoomScreenState();
+  Widget build(BuildContext context) {
+    // final String receivedData =
+    //     ModalRoute.of(context)!.settings.arguments as String;
+    return Scaffold(
+      appBar: MyAppBar(
+        title: 'Номера',
+        arrowFlag: true,
+      ),
+      body: MyRoomsBody(),
+    );
+  }
 }
 
-class _RoomScreenState extends State<RoomScreen> {
-  late Future<List<dynamic>> futureData;
-  late List<dynamic> data;
+class MyRoomsBody extends StatefulWidget {
+  // late Future<RoomList> stateRoomDto;
+  // late RoomList stateData;
+
+  // void initState() {
+  //   super.initState();
+  //   // Вызываем метод для выполнения HTTP-запроса при инициализации виджета
+  //   stateRoomDto = ApiClient.getRoomsData();
+  // }
+
+  const MyRoomsBody({
+    super.key,
+  });
+
+  @override
+  State<MyRoomsBody> createState() => _MyRoomsBodyState();
+}
+
+class _MyRoomsBodyState extends State<MyRoomsBody> {
+  late Future<RoomList> stateRoomDto;
+  late RoomList stateData;
+
+  @override
   void initState() {
     super.initState();
     // Вызываем метод для выполнения HTTP-запроса при инициализации виджета
-    futureData = fetchData();
+    stateRoomDto = ApiClient.getRoomsData();
   }
-  Future<List<dynamic>>   fetchData() async {
-    // URL для GET-запроса
 
-    String url = 'https://run.mocky.io/v3/e28ae1b9-2033-4d13-83e0-9f6c046b2f4a';
-
-    // Выполняем GET-запрос
-    final response = await http.get(Uri.parse(url));
-
-    // Проверяем успешность запроса
-    if (response.statusCode == 200) {
-      // Выводим ответ в консоль
-      print(jsonDecode(response.body.replaceAll('«', '"').replaceAll('»', '"')).runtimeType);
-      Map<String, dynamic> jsonData = jsonDecode(response.body.replaceAll('«', '"').replaceAll('»', '"'));
-      // List<RoomList> rooms = jsonData.map((item) => RoomList.fromJson(item)).toList();
-      return jsonData['номера'];
-    } else {
-      // Обрабатываем ошибку, если запрос не успешен
-      print(response.statusCode);
-      throw Exception('Error: ${response.statusCode}');
-    }
-  }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Center(child: Text('Steigenberger Makadi')),
-        toolbarHeight: 57,
+    return Center(
+      child: FutureBuilder(
+          future: stateRoomDto,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              // Если данные загружаются, отображаем индикатор загрузки
+              return CircularProgressIndicator();
+            } else if (snapshot.hasError) {
+              // Если произошла ошибка, отображаем сообщение об ошибке
+              return Text('Error: ${snapshot.error}');
+            } else {
+              // Если данные получены успешно, отображаем их
+              // dataScreenHotel = jsonDecode(snapshot.data!);
+              // print(jsonDecode(snapshot.data!));
+              // List<RoomDto> rooms = snapshot.data!;
+              stateData = snapshot.data!;
 
-      ),
-      body: Center(
-        child: FutureBuilder(
-            future: futureData,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                // Если данные загружаются, отображаем индикатор загрузки
-                return CircularProgressIndicator();
-              } else if (snapshot.hasError) {
-                // Если произошла ошибка, отображаем сообщение об ошибке
-                return Text('Error: ${snapshot.error}');
-              } else {
-                // Если данные получены успешно, отображаем их
-                // dataScreenHotel = jsonDecode(snapshot.data!);
-                // print(jsonDecode(snapshot.data!));
-                // List<RoomDto> rooms = snapshot.data!;
-                data = snapshot.data!;
-                // print(rooms);
-
-                return Container(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: ListView(
-                    children: 
-                      data.map((item){   return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+              return Container(
+                decoration: BoxDecoration(
+                  color: Color(0xFFF6F6F9),
+                ),
+                child: ListView(
+                  children: [
+                    SizedBox(
+                      height: 8,
+                    ),
+                    ...stateData.rooms.map((item) {
+                      return Column(
                         children: [
-const SizedBox(height: 16,),
-
-                          CarouselSliderImgs(item['image_urls'].cast<String>()),
-                          const SizedBox(height: 8,)
-,                          Text_SFPro_22_Widget(title: item['name'], color: Colors.black),
-const SizedBox(height: 8,),
-DivCharacteristicsWidget(peculiarities: item['особенности'].cast<String>()),
-const SizedBox(height: 7,),
-DetailsRoom(),
-const SizedBox(height: 16,),
-
-RoomPrice(minimalPrice: item['цена'], priceForIt: item['price_per']),
-const SizedBox(height: 16,),
-
-Container(
-  width: double.infinity,
-  child: ButtonWidget (
-                          title: 'Выбрать номер',
-                        ),
-),
-const SizedBox(height: 16,),
+                          Container(
+                            decoration: const BoxDecoration(
+                                color: Colors.white,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(12.0))),
+                            padding: const EdgeInsets.all(16),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                CarouselSliderImgs(item.imageUrls),
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                                Text_SFPro_22_Widget(
+                                    title: item.name, color: Colors.black),
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                                Container(
+                                  child: Wrap(
+                                    spacing:
+                                        8.0, // Расстояние между элементами по горизонтали
+                                    runSpacing: 8.0,
+                                    children: item.peculiarities
+                                        .map((e) => Container(
+                                            decoration: BoxDecoration(
+                                                color: Color(0xFFFBFBFC),
+                                                borderRadius:
+                                                    BorderRadius.circular(5)),
+                                            child: Text_SFPro_16_Widget(
+                                                title: e,
+                                                color: Color(0xFF828796))))
+                                        .toList(),
+                                  ),
+                                ),
+                                // DivCharacteristicsWidget(
+                                //     peculiarities:
+                                //         item.peculiarities),
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                                DetailsRoom(),
+                                const SizedBox(
+                                  height: 16,
+                                ),
+                                RoomPrice(
+                                    minimalPrice: item.price,
+                                    priceForIt: item.pricePer),
+                                const SizedBox(
+                                  height: 16,
+                                ),
+                                Container(
+                                  width: double.infinity,
+                                  child: ButtonWidget(
+                                      title: 'Выбрать номер',
+                                      pathNext: '/bookingScreen'),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 8,
+                          )
                         ],
-                      );})
-                    .toList()
-                 
-                    ,
-                  ),
-                );
-              };
-            }),
-      ),
+                      );
+                    }),
+                  ],
+                ),
+              );
+            }
+          }),
     );
   }
 }
@@ -137,21 +180,19 @@ class DetailsRoom extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text_SFPro_16_Widget(title: 'Подробнее о номере', color: Color(0xFF0D72FF))
-          
-          ,
+          Text_SFPro_16_Widget(
+              title: 'Подробнее о номере', color: Color(0xFF0D72FF)),
           const SizedBox(width: 2),
           Container(
-            padding: const EdgeInsets.only(top: 6, left: 10, right: 8, bottom: 6),
-            child:  SvgPicture.asset(
-                          'assets/Vector 55.svg',
-                          width: 14.0, // Ширина изображения
-                          height: 14.0, 
-                          color: Color(0xFF0D72FF) ,// Высота изображения
-                        )
-              ,
+            padding:
+                const EdgeInsets.only(top: 6, left: 10, right: 8, bottom: 6),
+            child: SvgPicture.asset(
+              'assets/Vector 55.svg',
+              width: 14.0, // Ширина изображения
+              height: 14.0,
+              color: Color(0xFF0D72FF), // Высота изображения
             ),
-          
+          ),
         ],
       ),
     );

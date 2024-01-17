@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:effective_mobile_test_tasck/pages/screen_hotel.dart';
+import 'package:effective_mobile_test_tasck/shared/button_widget.dart';
 import 'package:effective_mobile_test_tasck/shared/text__sf_pro_16__widget.dart';
 import 'package:effective_mobile_test_tasck/shared/text__sf_pro_22__widget.dart';
 import 'package:effective_mobile_test_tasck/widgets/carousel_with_indicator.dart';
@@ -61,9 +62,9 @@ class ScreenFinish extends StatelessWidget {
                   Container(
                     padding: EdgeInsets.only(top: 15, bottom: 14),
                     width: double.infinity,
-                    child: ButtonWidget(
-                      title: 'Супер!',
-                    ),
+                    // child: ButtonWidget(
+                    //   title: 'Супер!',
+                    // ),
                   )
                 ])));
   }

@@ -1,43 +1,57 @@
-import 'dart:convert';
-
 import 'package:effective_mobile_test_tasck/shared/JsonDto/hotelDto.dart';
 import 'package:effective_mobile_test_tasck/shared/apiClient.dart';
-import 'package:effective_mobile_test_tasck/widgets/carousel_with_indicator.dart';
-import 'package:effective_mobile_test_tasck/widgets/basic_data_hotel.dart';
+import 'package:effective_mobile_test_tasck/shared/button_widget.dart';
+import 'package:effective_mobile_test_tasck/shared/my_app_bar.dart';
+import 'package:effective_mobile_test_tasck/shared/text__sf_pro_16__widget.dart';
+import 'package:effective_mobile_test_tasck/shared/text__sf_pro_22__widget.dart';
+import 'package:effective_mobile_test_tasck/widgets/block_hotel_general_information.dart';
 import 'package:effective_mobile_test_tasck/shared/detailed_data_hotel.dart';
-import 'package:effective_mobile_test_tasck/widgets/price_hotel.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
-class HotelScreen extends StatefulWidget {
-  HotelScreen({super.key});
+class HotelScreen extends StatelessWidget {
+  const HotelScreen({super.key});
 
   @override
-  State<HotelScreen> createState() => _HotelScreenState();
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: MyAppBar(
+        title: 'Отель',
+      ),
+      extendBody: true,
+      body: MyHotelBody(),
+    );
+  }
 }
 
-class _HotelScreenState extends State<HotelScreen> {
+class MyHotelBody extends StatefulWidget {
+  const MyHotelBody({
+    super.key,
+  });
+
+  @override
+  State<MyHotelBody> createState() => _MyHotelBodyState();
+}
+
+class _MyHotelBodyState extends State<MyHotelBody> {
   late Future<HotelDto> stateHotelFuture;
   late HotelDto stateData;
 
+  @override
   void initState() {
     super.initState();
     // Вызываем метод для выполнения HTTP-запроса при инициализации виджета
     stateHotelFuture = ApiClient.getHotelData();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Center(child: Text('Отель')),
-        toolbarHeight: 57,
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
       ),
-      body: Center(
+      child: Center(
         child: FutureBuilder(
-            future: ApiClient.getHotelData(),
+            future: stateHotelFuture,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 // Если данные загружаются, отображаем индикатор загрузки
@@ -51,39 +65,72 @@ class _HotelScreenState extends State<HotelScreen> {
                 // print(this.data['image_urls']);
 
                 return Container(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  decoration: BoxDecoration(
+                    color: Color(0xFFF6F6F9),
+                  ),
                   child: ListView(
                     children: [
-                      CarouselSliderImgs(stateData.imageUrls
-                          .cast<String>()
-                          .toList()),
-                      const SizedBox(
-                        height: 21,
-                      ),
-                      BasicDataHotel(
-                        name: stateData.name,
-                        address: stateData.address,
-                        rating:
-                            '${stateData.rating} ${stateData.ratingName}',
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      HotelPrice(
-                        minimalPrice: stateData.minimalPrice,
-                        priceForIt: stateData.priceForIt,
-                      ),
+                      BlockHotelGeneralInformation(stateData: stateData),
                       const SizedBox(
                         height: 8,
                       ),
-                      DetailedDataHotel(
-                          aboutTheHotel: stateData.aboutTheHotel) 
-                          ,
-                      SizedBox(
+                      Container(
+                        decoration: const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(12.0))),
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text_SFPro_22_Widget(
+                                title: 'Об отеле',
+                              ),
+                              const SizedBox(
+                                height: 16,
+                              ),
+                              Container(
+                                child: Wrap(
+                                  spacing:
+                                      8.0, // Расстояние между элементами по горизонтали
+                                  runSpacing: 8.0,
+                                  children: stateData
+                                      .aboutTheHotel.peculiarities
+                                      .map((e) => Container(
+                                          decoration: BoxDecoration(
+                                              color: Color(0xFFFBFBFC),
+                                              borderRadius:
+                                                  BorderRadius.circular(5)),
+                                          child: Text_SFPro_16_Widget(
+                                              title: e,
+                                              color: Color(0xFF828796))))
+                                      .toList(),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 12,
+                              ),
+                              Text_SFPro_16_Widget(
+                                title: stateData.aboutTheHotel.description,
+                                fontWeigh: FontWeight.w400,
+                              ),
+                              const SizedBox(
+                                height: 16,
+                              ),
+                              BlockDetailedPoints(),
+                            ]),
+                      ),
+                      const SizedBox(
                         height: 12,
                       ),
-                      ButtonWidget(
-                        title: 'К выбору номера',
+                      Container(
+                        padding: const EdgeInsets.only(
+                            top: 12, bottom: 28, left: 16, right: 16),
+                        decoration: const BoxDecoration(color: Colors.white),
+                        child: ButtonWidget(
+                            title: 'К выбору номера',
+                            pathNext: '/roomScreen',
+                            arguments: stateData.name),
                       )
                     ],
                   ),
@@ -92,35 +139,5 @@ class _HotelScreenState extends State<HotelScreen> {
             }),
       ),
     );
-  }
-}
-
-class ButtonWidget extends StatelessWidget {
-  final String title;
-  ButtonWidget({required this.title});
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-        onPressed: () {
-          // Обработчик нажатия кнопки
-        },
-        style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.blue, // Цвет фона кнопки
-            // onPrimary: Colors.white, // Цвет текста на кнопке
-            padding: EdgeInsets.only(top: 15, bottom: 14), // Отступы
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0), // Закругленные углы
-            )),
-        child: Text(
-          title,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 16,
-            fontFamily: 'SF Pro Display',
-            fontWeight: FontWeight.w500,
-            letterSpacing: 0.10,
-          ),
-        ));
   }
 }

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:effective_mobile_test_tasck/pages/screen_hotel.dart';
 import 'package:effective_mobile_test_tasck/shared/JsonDto/bookingDto.dart';
+import 'package:effective_mobile_test_tasck/shared/button_widget.dart';
 import 'package:effective_mobile_test_tasck/shared/text__sf_pro_14__widget.dart';
 import 'package:effective_mobile_test_tasck/shared/text__sf_pro_16__widget.dart';
 import 'package:effective_mobile_test_tasck/shared/text__sf_pro_22__widget.dart';

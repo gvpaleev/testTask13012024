@@ -7,7 +7,7 @@ class Text_SFPro_16_Widget extends StatelessWidget {
 
   Text_SFPro_16_Widget(
       {required this.title,
-      required this.color,
+      this.color = Colors.black,
       this.fontWeigh = FontWeight.w500});
 
   @override

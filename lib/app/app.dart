@@ -8,6 +8,11 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        appBarTheme: AppBarTheme(
+          color: Colors.white, // ваш цвет AppBar
+        ),
+      ),
       initialRoute: '/',
       debugShowCheckedModeBanner: false,
       routes: {

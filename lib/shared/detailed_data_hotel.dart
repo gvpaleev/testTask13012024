@@ -14,12 +14,11 @@ class DetailedDataHotel extends StatelessWidget {
       SizedBox(
         height: 16,
       ),
-      HeaderWidget(),
+      // HeaderWidget(),
       SizedBox(
         height: 16,
       ),
-      DivCharacteristicsWidget(
-          peculiarities: aboutTheHotel.peculiarities),
+      // DivCharacteristicsWidget(peculiarities: aboutTheHotel.peculiarities),
       SizedBox(
         height: 12,
       ),
@@ -27,44 +26,48 @@ class DetailedDataHotel extends StatelessWidget {
       SizedBox(
         height: 16,
       ),
-      DivAdvantagesHotelWidget()
+      BlockDetailedPoints()
     ]);
   }
 }
 
-class HeaderWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      'Об отеле',
-      style: TextStyle(
-        color: Colors.black,
-        fontSize: 22,
-        fontFamily: 'SF Pro Display',
-        fontWeight: FontWeight.w500,
-      ),
-    );
-  }
-}
+// class HeaderWidget extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Text(
+//       'Об отеле',
+//       style: TextStyle(
+//         color: Colors.black,
+//         fontSize: 22,
+//         fontFamily: 'SF Pro Display',
+//         fontWeight: FontWeight.w500,
+//       ),
+//     );
+//   }
+// }
 
-class DivCharacteristicsWidget extends StatelessWidget {
-  final List<String> peculiarities;
-  DivCharacteristicsWidget({required this.peculiarities});
+// class DivCharacteristicsWidget extends StatelessWidget {
+//   final List<String> peculiarities;
+//   DivCharacteristicsWidget({required this.peculiarities});
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Wrap(
-        spacing: 8.0, // Расстояние между элементами по горизонтали
-        runSpacing: 8.0,
-        children: peculiarities
-            .map(
-                (e) => Text_SFPro_16_Widget(title: e, color: Color(0xFF828796)))
-            .toList(),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       child: Wrap(
+//         spacing: 8.0, // Расстояние между элементами по горизонтали
+//         runSpacing: 8.0,
+//         children: peculiarities
+//             .map((e) => Container(
+//                 decoration: BoxDecoration(
+//                     color: Color(0xFFFBFBFC),
+//                     borderRadius: BorderRadius.circular(5)),
+//                 child:
+//                     Text_SFPro_16_Widget(title: e, color: Color(0xFF828796))))
+//             .toList(),
+//       ),
+//     );
+//   }
+// }
 
 class DescriptionHotelWidget extends StatelessWidget {
   final String description;
@@ -90,7 +93,7 @@ class DescriptionHotelWidget extends StatelessWidget {
   }
 }
 
-class DivAdvantagesHotelWidget extends StatelessWidget {
+class BlockDetailedPoints extends StatelessWidget {
   final List<List<String>> data = [
     [
       'assets/emoji-happy.svg',
@@ -163,32 +166,7 @@ class DivAdvantagesHotelWidget extends StatelessWidget {
                         ],
                       ),
                     ))
-              .toList()
-
-          // [
-          //   Row(
-          //     children: [
-          //       Icon(Icons.star),
-          //       SizedBox(
-          //         width: 12,
-          //       ),
-          //       Column(
-          //         crossAxisAlignment: CrossAxisAlignment.start,
-          //         children: [
-          //           Text_SFPro_16_Widget(
-          //             title: 'Удобства',
-          //             color: Color(0xFF2C3035),
-          //           ),
-          //           Text_SFPro_14_Widget(
-          //               title: 'Самое необходимое', color: Color(0xFF828696))
-          //         ],
-          //       ),
-          //       Expanded(child: Container()),
-          //       Icon(Icons.abc)
-          //     ],
-          //   )
-          // ],
-          ),
+              .toList()),
     );
   }
 }
