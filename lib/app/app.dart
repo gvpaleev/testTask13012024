@@ -11,10 +11,10 @@ class App extends StatelessWidget {
       initialRoute: '/',
       debugShowCheckedModeBanner: false,
       routes: {
-        '/': (ctx) => ScreenFinish(),
-        // '/': (ctx) => ScreenBooking(),
-        // '/': (ctx) => ScreenNumber(),
-        // '/': (ctx) => ScreenHotel(),
+        '/finishScreen': (ctx) => ScreenFinish(),
+        '/bookingScreen': (ctx) => BookingScreen(),
+        '/roomScreen': (ctx) => RoomScreen(),
+        '/': (ctx) => HotelScreen(),
       },
     );
   }

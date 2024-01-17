@@ -1,10 +1,11 @@
+import 'package:effective_mobile_test_tasck/shared/JsonDto/hotelDto.dart';
 import 'package:effective_mobile_test_tasck/shared/text__sf_pro_14__widget.dart';
 import 'package:effective_mobile_test_tasck/shared/text__sf_pro_16__widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class DetailedDataHotel extends StatelessWidget {
-  final Map<String, dynamic> aboutTheHotel;
+  final AboutTheHotel aboutTheHotel;
   const DetailedDataHotel({super.key, required this.aboutTheHotel});
 
   @override
@@ -18,11 +19,11 @@ class DetailedDataHotel extends StatelessWidget {
         height: 16,
       ),
       DivCharacteristicsWidget(
-          peculiarities: aboutTheHotel['peculiarities'].cast<String>()),
+          peculiarities: aboutTheHotel.peculiarities),
       SizedBox(
         height: 12,
       ),
-      DescriptionHotelWidget(description: aboutTheHotel['description']),
+      DescriptionHotelWidget(description: aboutTheHotel.description),
       SizedBox(
         height: 16,
       ),

@@ -11,14 +11,14 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 import 'package:flutter/material.dart';
 
-class ScreenBooking extends StatefulWidget {
-  const ScreenBooking({super.key});
+class BookingScreen extends StatefulWidget {
+  const BookingScreen({super.key});
 
   @override
-  State<ScreenBooking> createState() => _ScreenBookingState();
+  State<BookingScreen> createState() => _BookingScreenState();
 }
 
-class _ScreenBookingState extends State<ScreenBooking> {
+class _BookingScreenState extends State<BookingScreen> {
   late Future<BookingDto> futureData;
   late BookingDto data;
   void initState() {

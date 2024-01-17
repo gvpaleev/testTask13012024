@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:effective_mobile_test_tasck/shared/JsonDto/hotelDto.dart';
+import 'package:effective_mobile_test_tasck/shared/apiClient.dart';
 import 'package:effective_mobile_test_tasck/widgets/carousel_with_indicator.dart';
 import 'package:effective_mobile_test_tasck/widgets/basic_data_hotel.dart';
 import 'package:effective_mobile_test_tasck/shared/detailed_data_hotel.dart';
@@ -7,39 +9,24 @@ import 'package:effective_mobile_test_tasck/widgets/price_hotel.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-class ScreenHotel extends StatefulWidget {
-  ScreenHotel({super.key});
+class HotelScreen extends StatefulWidget {
+  HotelScreen({super.key});
 
   @override
-  State<ScreenHotel> createState() => _ScreenHotelState();
+  State<HotelScreen> createState() => _HotelScreenState();
 }
 
-class _ScreenHotelState extends State<ScreenHotel> {
-  late Future<String> futureData;
-  late Map<String, dynamic> dataScreenHotel;
+class _HotelScreenState extends State<HotelScreen> {
+  late Future<HotelDto> stateHotelFuture;
+  late HotelDto stateData;
 
   void initState() {
     super.initState();
     // Вызываем метод для выполнения HTTP-запроса при инициализации виджета
-    futureData = fetchData();
+    stateHotelFuture = ApiClient.getHotelData();
   }
 
-  Future<String> fetchData() async {
-    // URL для GET-запроса
-    String url = 'https://run.mocky.io/v3/d144777c-a67f-4e35-867a-cacc3b827473';
 
-    // Выполняем GET-запрос
-    final response = await http.get(Uri.parse(url));
-
-    // Проверяем успешность запроса
-    if (response.statusCode == 200) {
-      // Выводим ответ в консоль
-      return response.body;
-    } else {
-      // Обрабатываем ошибку, если запрос не успешен
-      return 'Error: ${response.statusCode}';
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +37,7 @@ class _ScreenHotelState extends State<ScreenHotel> {
       ),
       body: Center(
         child: FutureBuilder(
-            future: futureData,
+            future: ApiClient.getHotelData(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 // Если данные загружаются, отображаем индикатор загрузки
@@ -60,38 +47,38 @@ class _ScreenHotelState extends State<ScreenHotel> {
                 return Text('Error: ${snapshot.error}');
               } else {
                 // Если данные получены успешно, отображаем их
-                dataScreenHotel = jsonDecode(snapshot.data!);
+                stateData = snapshot.data!;
                 // print(this.data['image_urls']);
 
                 return Container(
                   padding: EdgeInsets.symmetric(horizontal: 16),
                   child: ListView(
                     children: [
-                      CarouselSliderImgs(dataScreenHotel['image_urls']
+                      CarouselSliderImgs(stateData.imageUrls
                           .cast<String>()
                           .toList()),
                       const SizedBox(
                         height: 21,
                       ),
                       BasicDataHotel(
-                        name: dataScreenHotel['name'],
-                        address: dataScreenHotel['adress'],
+                        name: stateData.name,
+                        address: stateData.address,
                         rating:
-                            '${dataScreenHotel['rating']} ${dataScreenHotel['rating_name']}',
+                            '${stateData.rating} ${stateData.ratingName}',
                       ),
                       const SizedBox(
                         height: 10,
                       ),
                       HotelPrice(
-                        minimalPrice: dataScreenHotel['minimal_price'],
-                        priceForIt: dataScreenHotel['price_for_it'],
+                        minimalPrice: stateData.minimalPrice,
+                        priceForIt: stateData.priceForIt,
                       ),
                       const SizedBox(
                         height: 8,
                       ),
                       DetailedDataHotel(
-                          aboutTheHotel: jsonDecode(
-                              snapshot.data ?? '')['about_the_hotel']),
+                          aboutTheHotel: stateData.aboutTheHotel) 
+                          ,
                       SizedBox(
                         height: 12,
                       ),

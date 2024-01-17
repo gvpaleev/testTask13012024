@@ -23,15 +23,15 @@ Map<String, dynamic> _$AboutTheHotelToJson(AboutTheHotel instance) =>
 HotelDto _$HotelDtoFromJson(Map<String, dynamic> json) => HotelDto(
       id: json['id'] as int,
       name: json['name'] as String,
-      address: json['address'] as String,
-      minimalPrice: json['minimalPrice'] as int,
-      priceForIt: json['priceForIt'] as String,
+      address: json['adress'] as String,
+      minimalPrice: json['minimal_price'] as int,
+      priceForIt: json['price_for_it'] as String,
       rating: json['rating'] as int,
-      ratingName: json['ratingName'] as String,
+      ratingName: json['rating_name'] as String,
       imageUrls:
-          (json['imageUrls'] as List<dynamic>).map((e) => e as String).toList(),
+          (json['image_urls'] as List<dynamic>).map((e) => e as String).toList(),
       aboutTheHotel:
-          AboutTheHotel.fromJson(json['aboutTheHotel'] as Map<String, dynamic>),
+          AboutTheHotel.fromJson(json['about_the_hotel'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$HotelDtoToJson(HotelDto instance) => <String, dynamic>{
