@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:effective_mobile_test_tasck/pages/screen_hotel.dart';
 import 'package:effective_mobile_test_tasck/shared/button_widget.dart';
+import 'package:effective_mobile_test_tasck/shared/my_app_bar.dart';
 import 'package:effective_mobile_test_tasck/shared/text__sf_pro_16__widget.dart';
 import 'package:effective_mobile_test_tasck/shared/text__sf_pro_22__widget.dart';
 import 'package:effective_mobile_test_tasck/widgets/carousel_with_indicator.dart';
@@ -17,10 +18,12 @@ class ScreenFinish extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Center(child: Text('Заказ оплачен')),
+        appBar: MyAppBar(
+          title: 'Заказ оплачен',
+          screen: 1,
         ),
         body: Container(
+            color: Colors.white,
             padding: EdgeInsets.all(23),
             width: double.infinity,
             child: Column(
@@ -33,7 +36,7 @@ class ScreenFinish extends StatelessWidget {
                       padding: EdgeInsets.all(25),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(100),
-                        color: Color.fromARGB(131, 23, 23, 168),
+                        color: Color(0xFFF6F6F9),
                       ),
                       child: Image.asset(
                         'assets/finish.png',
@@ -62,9 +65,9 @@ class ScreenFinish extends StatelessWidget {
                   Container(
                     padding: EdgeInsets.only(top: 15, bottom: 14),
                     width: double.infinity,
-                    // child: ButtonWidget(
-                    //   title: 'Супер!',
-                    // ),
+                    child: ButtonWidget(
+                      title: 'Супер!',
+                    ),
                   )
                 ])));
   }

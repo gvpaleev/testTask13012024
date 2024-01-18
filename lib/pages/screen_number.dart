@@ -20,7 +20,7 @@ class RoomScreen extends StatelessWidget {
     return Scaffold(
       appBar: MyAppBar(
         title: 'Номера',
-        arrowFlag: true,
+        screen: 1,
       ),
       body: MyRoomsBody(),
     );

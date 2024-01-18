@@ -1,13 +1,16 @@
 import 'dart:convert';
 import 'package:effective_mobile_test_tasck/pages/screen_hotel.dart';
 import 'package:effective_mobile_test_tasck/shared/JsonDto/bookingDto.dart';
+import 'package:effective_mobile_test_tasck/shared/apiClient.dart';
 import 'package:effective_mobile_test_tasck/shared/button_widget.dart';
+import 'package:effective_mobile_test_tasck/shared/my_app_bar.dart';
 import 'package:effective_mobile_test_tasck/shared/text__sf_pro_14__widget.dart';
 import 'package:effective_mobile_test_tasck/shared/text__sf_pro_16__widget.dart';
 import 'package:effective_mobile_test_tasck/shared/text__sf_pro_22__widget.dart';
 import 'package:effective_mobile_test_tasck/widgets/basic_data_hotel.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 import 'package:flutter/material.dart';
@@ -21,41 +24,21 @@ class BookingScreen extends StatefulWidget {
 
 class _BookingScreenState extends State<BookingScreen> {
   late Future<BookingDto> futureData;
-  late BookingDto data;
+  late BookingDto stateData;
+
   void initState() {
     super.initState();
     // Вызываем метод для выполнения HTTP-запроса при инициализации виджета
-    futureData = fetchData();
-  }
-
-  Future<BookingDto> fetchData() async {
-    // URL для GET-запроса
-
-    String url = 'https://run.mocky.io/v3/63866c74-d593-432c-af8e-f279d1a8d2ff';
-
-    // Выполняем GET-запрос
-    final response = await http.get(Uri.parse(url));
-
-    // Проверяем успешность запроса
-    if (response.statusCode == 200) {
-      // Выводим ответ в консоль
-      data = BookingDto.fromJson(jsonDecode(response.body));
-
-      // print(data);
-
-      return data;
-      // throw Exception('Error: ${response.statusCode}');
-    } else {
-      // Обрабатываем ошибку, если запрос не успешен
-      print(response.statusCode);
-      throw Exception('Error: ${response.statusCode}');
-    }
+    futureData = ApiClient.getBookingData();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Center(child: Text('Бронирование'))),
+      appBar: MyAppBar(
+        title: 'Бронирование',
+        screen: 2,
+      ),
       body: Container(
         child: Center(
           child: FutureBuilder(
@@ -68,9 +51,11 @@ class _BookingScreenState extends State<BookingScreen> {
                   // Если произошла ошибка, отображаем сообщение об ошибке
                   return Text('Error: ${snapshot.error}');
                 } else {
-                  // Если данные получены успешно
+                  stateData = snapshot.data!;
+
                   return BodyBooking(
-                    data: data,
+                    // data = snapshot.data
+                    data: stateData,
                   );
                   // Container(
                   //   padding: EdgeInsets.symmetric(horizontal: 16),
@@ -91,24 +76,53 @@ class BodyBooking extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: EdgeInsets.symmetric(horizontal: 16),
+        decoration: BoxDecoration(
+          color: Color(0xFFF6F6F9),
+        ),
         child: ListView(
           children: [
-            BasicDataHotel(
-                name: data.hotelName,
-                address: data.hotelAddress,
-                rating: data.horating.toString() + ' ' + data.ratingName),
+            SizedBox(
+              height: 8,
+            ),
+            Container(
+              decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(12.0))),
+              padding: const EdgeInsets.all(16),
+              child: BasicDataHotel(
+                  name: data.hotelName,
+                  address: data.hotelAddress,
+                  rating: data.horating.toString() + ' ' + data.ratingName),
+            ),
+            SizedBox(
+              height: 8,
+            ),
             InfoBooking(data: data),
             SizedBox(
-              height: 100,
+              height: 8,
             ),
             InfoBuyer(),
             SizedBox(
-              height: 16,
+              height: 8,
             ),
             TouristBlock(),
+            SizedBox(
+              height: 8,
+            ),
             InfoPriceBooking(data: data),
-            ButtonWidget(title: 'Оплатить 198 036 ₽')
+            SizedBox(
+              height: 8,
+            ),
+            Container(
+                decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(12.0))),
+                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                child: ButtonWidget(
+                  title:
+                      ('Оплатить ${NumberFormat('#,##0', 'en_US').format((data.tourPrice + data.fuelCharge + data.serviceCharge)).replaceAll(',', ' ')} ₽'),
+                  pathNext: '/finishScreen',
+                ))
           ],
         ));
   }
@@ -141,46 +155,65 @@ class _TouristBlockState extends State<TouristBlock> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ...elements
-            .where((element) =>
-                elements.indexOf(element) != 0 &&
-                elements.indexOf(element) < countEnable)
-            .toList()
-            .map((element) => ExpansionPanelListExample(
-                  title: element + ' турист',
-                  flag: element == 'Первый',
-                ))
-            .toList(),
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 13),
-          child: Row(
-            children: [
-              Text_SFPro_22_Widget(
-                title: 'Добавить туриста',
-                color: Colors.black,
-              ),
-              Expanded(
-                child: Container(),
-              ),
-              Container(
-                padding: EdgeInsets.all(0),
-                decoration: BoxDecoration(
-                    color: Color(0xFF0D72FF),
-                    borderRadius: BorderRadius.circular(10)),
-                child: IconButton(
-                  icon: SvgPicture.asset('assets/frame609.svg'),
-                  onPressed: () {
-                    increment();
-                    print('Button pressed');
-                  },
+    return Container(
+      child: Column(
+        children: [
+          ...elements
+              .where((element) =>
+                  elements.indexOf(element) != 0 &&
+                  elements.indexOf(element) < countEnable)
+              .toList()
+              .map((element) => Column(
+                    children: [
+                      Container(
+                        decoration: const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(12.0))),
+                        padding: EdgeInsets.all(16),
+                        child: ExpansionPanelListExample(
+                          title: element + ' турист',
+                          flag: element == 'Первый',
+                        ),
+                      ),
+                      SizedBox(
+                        height: 8,
+                      )
+                    ],
+                  ))
+              .toList(),
+          Container(
+            decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(12.0))),
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 13),
+            child: Row(
+              children: [
+                Text_SFPro_22_Widget(
+                  title: 'Добавить туриста',
+                  color: Colors.black,
                 ),
-              )
-            ],
-          ),
-        )
-      ],
+                Expanded(
+                  child: Container(),
+                ),
+                Container(
+                  padding: EdgeInsets.all(0),
+                  decoration: BoxDecoration(
+                      color: Color(0xFF0D72FF),
+                      borderRadius: BorderRadius.circular(10)),
+                  child: IconButton(
+                    icon: SvgPicture.asset('assets/frame609.svg'),
+                    onPressed: () {
+                      increment();
+                      print('Button pressed');
+                    },
+                  ),
+                )
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 }
@@ -196,6 +229,9 @@ class InfoBuyer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(12.0))),
       padding: EdgeInsets.all(16),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Text_SFPro_22_Widget(
@@ -203,45 +239,60 @@ class InfoBuyer extends StatelessWidget {
         Form(
           child: Column(children: [
             // Поле ввода для имени
-            TextFormField(
-              controller: nameController,
-              decoration: InputDecoration(
-                labelText: 'Номер телефона',
-                hintText: '+7 (***) ***-**-**',
-                border: InputBorder.none,
+            Container(
+              padding: EdgeInsets.only(left: 16, top: 0, bottom: 0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Color(0xFFF6F6F9),
               ),
-              inputFormatters: [
-                MaskTextInputFormatter(
-                  mask:
-                      '+7 (###) ###-##-##', // Задайте нужную маску для номера телефона
-                  filter: {
-                    "#": RegExp(r'[0-9]')
-                  }, // Фильтр для разрешенных символов
-                )
-              ],
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Пожалуйста, введите имя';
-                }
-                return null;
-              },
+              child: TextFormField(
+                controller: nameController,
+                decoration: InputDecoration(
+                  labelText: 'Номер телефона',
+                  hintText: '+7 (***) ***-**-**',
+                  border: InputBorder.none,
+                ),
+                inputFormatters: [
+                  MaskTextInputFormatter(
+                    mask:
+                        '+7 (###) ###-##-##', // Задайте нужную маску для номера телефона
+                    filter: {
+                      "#": RegExp(r'[0-9]')
+                    }, // Фильтр для разрешенных символов
+                  )
+                ],
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Пожалуйста, введите имя';
+                  }
+                  return null;
+                },
+              ),
             ),
             SizedBox(height: 16.0),
 
             // Поле ввода для электронной почты
-            TextFormField(
-              controller: emailController,
-              decoration: InputDecoration(
-                labelText: 'Почта',
-                border: InputBorder.none,
+
+            Container(
+              padding: EdgeInsets.only(left: 16, top: 0, bottom: 0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Color(0xFFF6F6F9),
               ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Пожалуйста, введите адрес электронной почты';
-                }
-                // Дополнительные проверки формата электронной почты могут быть добавлены
-                return null;
-              },
+              child: TextFormField(
+                controller: emailController,
+                decoration: InputDecoration(
+                  labelText: 'Почта',
+                  border: InputBorder.none,
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Пожалуйста, введите адрес электронной почты';
+                  }
+                  // Дополнительные проверки формата электронной почты могут быть добавлены
+                  return null;
+                },
+              ),
             ),
             SizedBox(height: 16.0),
 
@@ -277,6 +328,9 @@ class InfoBooking extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(12.0))),
       padding: EdgeInsets.all(16),
       child: Column(
         children: [
@@ -339,12 +393,15 @@ class InfoPriceBooking extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(12.0))),
       padding: EdgeInsets.all(16),
       child: Column(
         children: [
           lineInfoBooking(
             keyName: 'Тур',
-            value: data.departure,
+            value: data.tourPrice.toString(),
             flag: true,
           ),
           SizedBox(
@@ -352,7 +409,7 @@ class InfoPriceBooking extends StatelessWidget {
           ),
           lineInfoBooking(
             keyName: 'Топливный сбор',
-            value: data.arrivalCountry,
+            value: data.fuelCharge.toString(),
             flag: true,
           ),
           SizedBox(
@@ -360,7 +417,7 @@ class InfoPriceBooking extends StatelessWidget {
           ),
           lineInfoBooking(
             keyName: 'Сервисный сбор',
-            value: data.tourDateStart,
+            value: data.serviceCharge.toString(),
             flag: true,
           ),
           SizedBox(
@@ -368,7 +425,8 @@ class InfoPriceBooking extends StatelessWidget {
           ),
           lineInfoBooking(
             keyName: 'К оплате',
-            value: data.numberOfNights.toString(),
+            value: (data.tourPrice + data.fuelCharge + data.serviceCharge)
+                .toString(),
             flag: true,
           ),
         ],
@@ -434,27 +492,32 @@ class _ExpansionPanelListExampleState extends State<ExpansionPanelListExample> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Container(
-        child: ExpansionPanelList(
-          elevation: 0,
-          expansionCallback: (int index, bool isExpanded) {
-            setState(() {
-              widget.flag = isExpanded;
-            });
-          },
-          children: [
-            ExpansionPanel(
-              headerBuilder: (BuildContext context, bool isExpanded) {
-                return ListTile(
-                  title: Text_SFPro_22_Widget(
-                    title: widget.title,
-                    color: Colors.black,
-                  ),
-                );
-              },
-              body: formTourist(),
-              isExpanded: widget.flag,
-            )
-          ],
+        // color: Colors.red,
+        child: Theme(
+          data: Theme.of(context).copyWith(cardColor: Colors.white),
+          child: ExpansionPanelList(
+            dividerColor: Colors.black,
+            elevation: 0,
+            expansionCallback: (int index, bool isExpanded) {
+              setState(() {
+                widget.flag = isExpanded;
+              });
+            },
+            children: [
+              ExpansionPanel(
+                headerBuilder: (BuildContext context, bool isExpanded) {
+                  return ListTile(
+                    title: Text_SFPro_22_Widget(
+                      title: widget.title,
+                      color: Colors.black,
+                    ),
+                  );
+                },
+                body: formTourist(),
+                isExpanded: widget.flag,
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -470,35 +533,33 @@ class formTourist extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+        // color: Colors.red,
         child: Form(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            // TextFormField для ввода текста
-            TextFormFieldW(
-              name: 'Имя',
-              controller: data.name,
-            ),
-            SizedBox(height: 16.0),
-            TextFormFieldW(
-              name: 'Фамилия',
-              controller: data.surname,
-            ),
-            SizedBox(height: 16.0),
-            TextFormFieldW(name: 'Дата рождения', controller: data.dateOfBirth),
-            SizedBox(height: 16.0),
-            TextFormFieldW(name: 'Гражданство', controller: data.citizenship),
-            SizedBox(height: 16.0),
-            TextFormFieldW(
-                name: 'Номер загранпаспорта', controller: data.passportNumber),
-            SizedBox(height: 16.0),
-            TextFormFieldW(
-                name: 'Срок действия загранпаспорта',
-                controller: data.validityPeriodPassportNumber)
-            // Кнопка для отправки формы
-          ],
-        ),
+      child: Column(
+        children: [
+          // TextFormField для ввода текста
+          TextFormFieldW(
+            name: 'Имя',
+            controller: data.name,
+          ),
+          SizedBox(height: 16.0),
+          TextFormFieldW(
+            name: 'Фамилия',
+            controller: data.surname,
+          ),
+          SizedBox(height: 16.0),
+          TextFormFieldW(name: 'Дата рождения', controller: data.dateOfBirth),
+          SizedBox(height: 16.0),
+          TextFormFieldW(name: 'Гражданство', controller: data.citizenship),
+          SizedBox(height: 16.0),
+          TextFormFieldW(
+              name: 'Номер загранпаспорта', controller: data.passportNumber),
+          SizedBox(height: 16.0),
+          TextFormFieldW(
+              name: 'Срок действия загранпаспорта',
+              controller: data.validityPeriodPassportNumber)
+          // Кнопка для отправки формы
+        ],
       ),
     ));
   }

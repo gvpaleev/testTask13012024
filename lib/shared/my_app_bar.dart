@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
-  bool arrowFlag;
-  MyAppBar({super.key, required this.title, this.arrowFlag = false});
+  int screen;
+  MyAppBar({super.key, required this.title, this.screen = 0});
 
   @override
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
@@ -18,7 +18,15 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
         AppBar(
           backgroundColor: Colors.white,
           title: Transform.translate(
-              offset: Offset(arrowFlag ? -33.0 : 0, 0),
+              offset: Offset(
+                  screen == 1
+                      ? -29.0
+                      : screen == 2
+                          ? -30.0
+                          : screen == 3
+                              ? -33.0
+                              : 0,
+                  0),
               child: Center(child: Text(title))),
           toolbarHeight: 57,
         ),

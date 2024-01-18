@@ -17,7 +17,7 @@ class ButtonWidget extends StatelessWidget {
           Navigator.pushNamed(context, pathNext, arguments: arguments);
         },
         style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.blue, // Цвет фона кнопки
+            backgroundColor: Color(0xFF0D72FF), // Цвет фона кнопки
             // onPrimary: Colors.white, // Цвет текста на кнопке
             padding: EdgeInsets.only(top: 15, bottom: 14), // Отступы
             shape: RoundedRectangleBorder(
