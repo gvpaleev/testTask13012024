@@ -1,16 +1,7 @@
 # effective_mobile_test_tasck
 
-A new Flutter project.
+Архетектура feature sliced design [(https://feature-sliced.design/ru/docs/get-started/overview)](https://feature-sliced.design/ru/docs/get-started/overview)https://feature-sliced.design/ru/docs/get-started/overview
 
-## Getting Started
+ТЗ https://docs.google.com/document/d/1odLvGFLlYBeI2EENJzjGiOsSfr8f2M_5AzdRGpsI4yQ/edit
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Видео приложения https://www.youtube.com/watch?v=Kdg49G6ahtc
