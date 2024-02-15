@@ -20,7 +20,7 @@ Map<String, dynamic> _$AboutTheHotelToJson(AboutTheHotel instance) =>
       'peculiarities': instance.peculiarities,
     };
 
-HotelDto _$HotelDtoFromJson(Map<String, dynamic> json) => HotelDto(
+HotelCartDto _$HotelDtoFromJson(Map<String, dynamic> json) => HotelCartDto(
       id: json['id'] as int,
       name: json['name'] as String,
       address: json['adress'] as String,
@@ -28,13 +28,15 @@ HotelDto _$HotelDtoFromJson(Map<String, dynamic> json) => HotelDto(
       priceForIt: json['price_for_it'] as String,
       rating: json['rating'] as int,
       ratingName: json['rating_name'] as String,
-      imageUrls:
-          (json['image_urls'] as List<dynamic>).map((e) => e as String).toList(),
-      aboutTheHotel:
-          AboutTheHotel.fromJson(json['about_the_hotel'] as Map<String, dynamic>),
+      imageUrls: (json['image_urls'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
+      aboutTheHotel: AboutTheHotel.fromJson(
+          json['about_the_hotel'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$HotelDtoToJson(HotelDto instance) => <String, dynamic>{
+Map<String, dynamic> _$HotelDtoToJson(HotelCartDto instance) =>
+    <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
       'address': instance.address,

@@ -10,7 +10,7 @@ class BlockHotelGeneralInformation extends StatelessWidget {
     required this.stateData,
   });
 
-  final HotelDto stateData;
+  final HotelCartDto stateData;
 
   @override
   Widget build(BuildContext context) {

@@ -19,7 +19,7 @@ class AboutTheHotel {
 }
 
 @JsonSerializable()
-class HotelDto {
+class HotelCartDto {
   int id;
   String name;
   String address;
@@ -30,7 +30,7 @@ class HotelDto {
   List<String> imageUrls;
   AboutTheHotel aboutTheHotel;
 
-  HotelDto({
+  HotelCartDto({
     required this.id,
     required this.name,
     required this.address,
@@ -42,7 +42,7 @@ class HotelDto {
     required this.aboutTheHotel,
   });
 
-  factory HotelDto.fromJson(Map<String, dynamic> json) =>
+  factory HotelCartDto.fromJson(Map<String, dynamic> json) =>
       _$HotelDtoFromJson(json);
 
   Map<String, dynamic> toJson() => _$HotelDtoToJson(this);

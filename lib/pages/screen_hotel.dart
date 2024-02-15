@@ -33,8 +33,8 @@ class MyHotelBody extends StatefulWidget {
 }
 
 class _MyHotelBodyState extends State<MyHotelBody> {
-  late Future<HotelDto> stateHotelFuture;
-  late HotelDto stateData;
+  late Future<HotelCartDto> stateHotelFuture;
+  late HotelCartDto stateData;
 
   @override
   void initState() {
