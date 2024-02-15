@@ -10,8 +10,8 @@ final class HotelCardBlocInitialState extends HotelCardState {
   HotelCardBlocInitialState();
 }
 
-final class HotelCardBlocUpdateState extends HotelCardState {
-  HotelCardBlocUpdateState({required super.data});
+final class HotelCardUpdateState extends HotelCardState {
+  HotelCardUpdateState({required super.data});
 }
 
 // {
