@@ -118,7 +118,7 @@ class BodyBooking extends StatelessWidget {
                     color: Colors.white,
                     borderRadius: BorderRadius.all(Radius.circular(12.0))),
                 padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-                child: ButtonWidget(
+                child: ButtonWidget2(
                   title:
                       ('Оплатить ${NumberFormat('#,##0', 'en_US').format((data.tourPrice + data.fuelCharge + data.serviceCharge)).replaceAll(',', ' ')} ₽'),
                   pathNext: '/finishScreen',

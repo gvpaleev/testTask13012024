@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class ButtonWidget extends StatelessWidget {
+class ButtonWidget2 extends StatelessWidget {
   final String title;
   final String pathNext;
   final String arguments;
-  const ButtonWidget(
+  const ButtonWidget2(
       {super.key,
       required this.title,
       this.pathNext = '/',

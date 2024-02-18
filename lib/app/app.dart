@@ -24,12 +24,10 @@ class App extends StatelessWidget {
         '/finishScreen': (ctx) => ScreenFinish(),
         '/bookingScreen': (ctx) => BookingScreen(),
         '/roomScreen': (ctx) => RoomScreen(),
-        '/': (ctx) =>
-            Container(child: BlocBuilder<HotelCardBloc, HotelCardState>(
-              builder: (context, state) {
-                return HotelScreen();
-              },
-            )),
+        '/': (ctx) => BlocProvider<HotelCardBloc>(
+              create: (context) => HotelCardBloc(),
+              child: HotelScreen(),
+            ),
       },
     );
   }

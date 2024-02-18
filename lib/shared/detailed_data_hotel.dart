@@ -1,4 +1,4 @@
-import 'package:effective_mobile_test_tasck/shared/JsonDto/hotelDto.dart';
+import 'package:effective_mobile_test_tasck/shared/repository/hotelDto.dart';
 import 'package:effective_mobile_test_tasck/shared/text__sf_pro_14__widget.dart';
 import 'package:effective_mobile_test_tasck/shared/text__sf_pro_16__widget.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +22,7 @@ class DetailedDataHotel extends StatelessWidget {
       SizedBox(
         height: 12,
       ),
-      DescriptionHotelWidget(description: aboutTheHotel.description),
+      DescriptionHotelWidget2(description: aboutTheHotel.description),
       SizedBox(
         height: 16,
       ),
@@ -69,9 +69,9 @@ class DetailedDataHotel extends StatelessWidget {
 //   }
 // }
 
-class DescriptionHotelWidget extends StatelessWidget {
+class DescriptionHotelWidget2 extends StatelessWidget {
   final String description;
-  DescriptionHotelWidget({required this.description});
+  DescriptionHotelWidget2({required this.description});
   @override
   Widget build(BuildContext context) {
     return Column(

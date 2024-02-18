@@ -140,7 +140,7 @@ class _MyRoomsBodyState extends State<MyRoomsBody> {
                                 ),
                                 Container(
                                   width: double.infinity,
-                                  child: ButtonWidget(
+                                  child: ButtonWidget2(
                                       title: 'Выбрать номер',
                                       pathNext: '/bookingScreen'),
                                 ),

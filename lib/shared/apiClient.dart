@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:effective_mobile_test_tasck/shared/JsonDto/bookingDto.dart';
-import 'package:effective_mobile_test_tasck/shared/JsonDto/hotelDto.dart';
 import 'package:effective_mobile_test_tasck/shared/JsonDto/roomDto.dart';
+import 'package:effective_mobile_test_tasck/shared/repository/hotelDto.dart';
 import 'package:http/http.dart' as http;
 
 abstract class ApiClient {

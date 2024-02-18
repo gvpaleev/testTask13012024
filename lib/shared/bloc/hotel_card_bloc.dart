@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:effective_mobile_test_tasck/shared/JsonDto/hotelDto.dart';
+import 'package:effective_mobile_test_tasck/shared/repository/hotelDto.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:dio/dio.dart';

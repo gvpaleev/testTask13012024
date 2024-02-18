@@ -65,7 +65,7 @@ class ScreenFinish extends StatelessWidget {
                   Container(
                     padding: EdgeInsets.only(top: 15, bottom: 14),
                     width: double.infinity,
-                    child: ButtonWidget(
+                    child: ButtonWidget2(
                       title: 'Супер!',
                     ),
                   )
