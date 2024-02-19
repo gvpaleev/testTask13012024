@@ -1,6 +1,5 @@
-import 'dart:convert';
-import 'package:effective_mobile_test_tasck/pages/screen_hotel.dart';
 import 'package:effective_mobile_test_tasck/shared/apiClient.dart';
+import 'package:effective_mobile_test_tasck/shared/bloc/booking_screen_bloc.dart';
 import 'package:effective_mobile_test_tasck/shared/button_widget.dart';
 import 'package:effective_mobile_test_tasck/shared/my_app_bar.dart';
 import 'package:effective_mobile_test_tasck/shared/repository/bookingDto.dart';
@@ -9,9 +8,9 @@ import 'package:effective_mobile_test_tasck/shared/text__sf_pro_16__widget.dart'
 import 'package:effective_mobile_test_tasck/shared/text__sf_pro_22__widget.dart';
 import 'package:effective_mobile_test_tasck/widgets/basic_data_hotel.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter/material.dart';
 
@@ -23,15 +22,6 @@ class BookingScreen extends StatefulWidget {
 }
 
 class _BookingScreenState extends State<BookingScreen> {
-  late Future<BookingDto> futureData;
-  late BookingDto stateData;
-
-  void initState() {
-    super.initState();
-    // Вызываем метод для выполнения HTTP-запроса при инициализации виджета
-    futureData = ApiClient.getBookingData();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,91 +30,78 @@ class _BookingScreenState extends State<BookingScreen> {
         screen: 2,
       ),
       body: Container(
-        child: Center(
-          child: FutureBuilder(
-              future: futureData,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  // Если данные загружаются, отображаем индикатор загрузки
-                  return CircularProgressIndicator();
-                } else if (snapshot.hasError) {
-                  // Если произошла ошибка, отображаем сообщение об ошибке
-                  return Text('Error: ${snapshot.error}');
-                } else {
-                  stateData = snapshot.data!;
-
-                  return BodyBooking(
-                    // data = snapshot.data
-                    data: stateData,
-                  );
-                  // Container(
-                  //   padding: EdgeInsets.symmetric(horizontal: 16),
-                  //   child: ListView(children: [BodyBooking()]),
-                  // );
-                }
-              }),
-        ),
+        child: Center(child: BodyBooking()),
       ),
     );
   }
 }
 
 class BodyBooking extends StatelessWidget {
-  late BookingDto data;
-  BodyBooking({super.key, required this.data});
+  BodyBooking({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        decoration: BoxDecoration(
-          color: Color(0xFFF6F6F9),
-        ),
-        child: ListView(
-          children: [
-            SizedBox(
-              height: 8,
+    return BlocBuilder<BookingScreenBloc, BookingScreenState>(
+      builder: (context, state) {
+        return Container(
+            decoration: BoxDecoration(
+              color: Color(0xFFF6F6F9),
             ),
-            Container(
-              decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(12.0))),
-              padding: const EdgeInsets.all(16),
-              child: BasicDataHotel(
-                  name: data.hotelName,
-                  address: data.hotelAddress,
-                  rating: data.horating.toString() + ' ' + data.ratingName),
-            ),
-            SizedBox(
-              height: 8,
-            ),
-            InfoBooking(data: data),
-            SizedBox(
-              height: 8,
-            ),
-            InfoBuyer(),
-            SizedBox(
-              height: 8,
-            ),
-            TouristBlock(),
-            SizedBox(
-              height: 8,
-            ),
-            InfoPriceBooking(data: data),
-            SizedBox(
-              height: 8,
-            ),
-            Container(
-                decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(12.0))),
-                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-                child: ButtonWidget2(
-                  title:
-                      ('Оплатить ${NumberFormat('#,##0', 'en_US').format((data.tourPrice + data.fuelCharge + data.serviceCharge)).replaceAll(',', ' ')} ₽'),
-                  pathNext: '/finishScreen',
-                ))
-          ],
-        ));
+            child: state.data == null
+                ? Container()
+                : ListView(
+                    children: [
+                      SizedBox(
+                        height: 8,
+                      ),
+                      Container(
+                        decoration: const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(12.0))),
+                        padding: const EdgeInsets.all(16),
+                        child: BasicDataHotel(
+                            name: state.data!.hotelName,
+                            address: state.data!.hotelAddress,
+                            rating: state.data!.horating.toString() +
+                                ' ' +
+                                state.data!.ratingName),
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      InfoBooking(data: state.data!),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      InfoBuyer(),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      TouristBlock(),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      InfoPriceBooking(data: state.data!),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      Container(
+                          decoration: const BoxDecoration(
+                              color: Colors.white,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(12.0))),
+                          padding: EdgeInsets.symmetric(
+                              vertical: 12, horizontal: 16),
+                          child: ButtonWidget2(
+                            title:
+                                ('Оплатить ${NumberFormat('#,##0', 'en_US').format((state.data!.tourPrice + state.data!.fuelCharge + state.data!.serviceCharge)).replaceAll(',', ' ')} ₽'),
+                            pathNext: '/finishScreen',
+                          ))
+                    ],
+                  ));
+      },
+    );
   }
 }
 

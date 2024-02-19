@@ -53,7 +53,7 @@ class _MyRoomsBodyState extends State<MyRoomsBody> {
       builder: (context, state) {
         return Center(
           child: state.data == null
-              ? Container(child: Text('ssssssssss'))
+              ? Container()
               : Container(
                   decoration: BoxDecoration(
                     color: Color(0xFFF6F6F9),

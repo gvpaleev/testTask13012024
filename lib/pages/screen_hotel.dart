@@ -1,4 +1,3 @@
-import 'package:effective_mobile_test_tasck/shared/apiClient.dart';
 import 'package:effective_mobile_test_tasck/shared/bloc/hotel_card_bloc.dart';
 import 'package:effective_mobile_test_tasck/shared/my_app_bar.dart';
 import 'package:effective_mobile_test_tasck/shared/repository/hotelDto.dart';
@@ -35,13 +34,6 @@ class MyHotelBody extends StatefulWidget {
 class _MyHotelBodyState extends State<MyHotelBody> {
   late Future<HotelCartDto> stateHotelFuture;
   late HotelCartDto stateData;
-
-  @override
-  void initState() {
-    super.initState();
-    // Вызываем метод для выполнения HTTP-запроса при инициализации виджета
-    stateHotelFuture = ApiClient.getHotelData();
-  }
 
   @override
   Widget build(BuildContext context) {
