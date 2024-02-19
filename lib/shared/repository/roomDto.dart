@@ -4,26 +4,27 @@ part 'roomDto.g.dart';
 
 @JsonSerializable()
 class RoomList {
-  @JsonKey(name: 'номера')
+  @JsonKey(name: 'rooms')
   List<Room> rooms;
 
   RoomList({required this.rooms});
 
-  factory RoomList.fromJson(Map<String, dynamic> json) => _$RoomListFromJson(json);
+  factory RoomList.fromJson(Map<String, dynamic> json) =>
+      _$RoomListFromJson(json);
 
   Map<String, dynamic> toJson() => _$RoomListToJson(this);
 }
 
 @JsonSerializable()
 class Room {
-  @JsonKey(name: 'идентификатор')
+  // @JsonKey(name: 'идентификатор')
   int identifier;
   String name;
-  @JsonKey(name: 'цена')
+  // @JsonKey(name: 'цена')
   int price;
   @JsonKey(name: 'price_per')
   String pricePer;
-  @JsonKey(name: 'особенности')
+  // @JsonKey(name: 'особенности')
   List<String> peculiarities;
   @JsonKey(name: 'image_urls')
   List<String> imageUrls;

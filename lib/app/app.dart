@@ -3,6 +3,7 @@ import 'package:effective_mobile_test_tasck/pages/screen_finifsh.dart';
 import 'package:effective_mobile_test_tasck/pages/screen_hotel.dart';
 import 'package:effective_mobile_test_tasck/pages/screen_number.dart';
 import 'package:effective_mobile_test_tasck/shared/bloc/hotel_card_bloc.dart';
+import 'package:effective_mobile_test_tasck/shared/bloc/number_screen_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -23,7 +24,10 @@ class App extends StatelessWidget {
       routes: {
         '/finishScreen': (ctx) => ScreenFinish(),
         '/bookingScreen': (ctx) => BookingScreen(),
-        '/roomScreen': (ctx) => RoomScreen(),
+        '/roomScreen': (ctx) => BlocProvider(
+              create: (context) => NumberScreenBloc(),
+              child: RoomScreen(),
+            ),
         '/': (ctx) => BlocProvider<HotelCardBloc>(
               create: (context) => HotelCardBloc(),
               child: HotelScreen(),

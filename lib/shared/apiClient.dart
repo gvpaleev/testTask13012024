@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:effective_mobile_test_tasck/shared/JsonDto/bookingDto.dart';
-import 'package:effective_mobile_test_tasck/shared/JsonDto/roomDto.dart';
+import 'package:effective_mobile_test_tasck/shared/repository/bookingDto.dart';
 import 'package:effective_mobile_test_tasck/shared/repository/hotelDto.dart';
+import 'package:effective_mobile_test_tasck/shared/repository/roomDto.dart';
 import 'package:http/http.dart' as http;
 
 abstract class ApiClient {
@@ -34,12 +34,9 @@ abstract class ApiClient {
 
     // Проверяем успешность запроса
     if (response.statusCode == 200) {
-      // List<RoomList> rooms = jsonData.map((item) => RoomList.fromJson(item)).toList();
       return RoomList.fromJson(
           jsonDecode(response.body.replaceAll('«', '"').replaceAll('»', '"')));
     } else {
-      // Обрабатываем ошибку, если запрос не успешен
-      // print(response.statusCode);
       throw Exception('Error: ${response.statusCode}');
     }
   }
